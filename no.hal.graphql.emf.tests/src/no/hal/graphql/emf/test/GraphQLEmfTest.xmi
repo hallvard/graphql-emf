@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:Model
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="platform:/plugin/no.hal.graphql.emf.tests/src/no/hal/graphql/emf/test/test.ecore"
+    xsi:schemaLocation="platform:/plugin/no.hal.graphql.emf.tests/src/no/hal/graphql/emf/test/test.ecore test.ecore">
+  <persons name="Hallvard">
+    <ids>hal@ntnu.no</ids>
+    <ids>hallvard.traetteberg@gmail.com</ids>
+  </persons>
+  <persons name="Jon Espen">
+    <ids>jonespi@idi.ntnu.no</ids>
+    <ids>jonespen.ingvaldsen@ntnu.no</ids>
+  </persons>
+  <Game>
+    <tasks players="//@Game/@players.0"/>
+    <players
+        person="//@persons.0"/>
+    <players
+        person="//@persons.1"/>
+  </Game>
+</test:Model>

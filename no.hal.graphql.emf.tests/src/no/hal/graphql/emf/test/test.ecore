@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="test" nsURI="platform:/plugin/no.hal.graphql.emf.tests/src/no/hal/graphql/emf/test/test.ecore"
+    nsPrefix="test">
+  <eClassifiers xsi:type="ecore:EClass" name="Person">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ids" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Game">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
+        eType="#//Task" containment="true" eOpposite="#//Task/game"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="players" upperBound="-1"
+        eType="#//Player" containment="true" eOpposite="#//Player/game"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Player">
+    <eOperations name="getName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="getId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eParameters name="num" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="person" eType="#//Person"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="game" eType="#//Game" eOpposite="#//Game/players"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//PlayerKind"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Task">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="players" upperBound="-1"
+        eType="#//Player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="game" eType="#//Game" eOpposite="#//Game/tasks"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="states" eType="#//TaskState"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskState">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="entered" eType="#//Timestamp"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exited" eType="#//Timestamp"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Timestamp" instanceClassName="java.lang.Long"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="persons" upperBound="-1"
+        eType="#//Person" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Game" eType="#//Game" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PlayerKind">
+    <eLiterals name="NOVICE" literal="Novice"/>
+    <eLiterals name="EXPERT" literal="Expert"/>
+  </eClassifiers>
+</ecore:EPackage>

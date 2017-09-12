@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/no.hal.graphql.emf.tests/src" modelPluginID="no.hal.graphql.emf.tests"
+    modelName="Test" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    suppressInterfaces="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>test.ecore</foreignModel>
+  <genPackages prefix="Test" basePackage="no.hal.graphql.emf" disposableProviderFactory="true"
+      ecorePackage="test.ecore#/">
+    <genDataTypes ecoreDataType="test.ecore#//Timestamp"/>
+    <genClasses ecoreClass="test.ecore#//Person">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//Person/ids"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//Person/name"/>
+    </genClasses>
+    <genClasses ecoreClass="test.ecore#//Game">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference test.ecore#//Game/tasks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference test.ecore#//Game/players"/>
+    </genClasses>
+    <genClasses ecoreClass="test.ecore#//Player">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference test.ecore#//Player/person"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference test.ecore#//Player/game"/>
+    </genClasses>
+    <genClasses ecoreClass="test.ecore#//Task">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference test.ecore#//Task/players"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference test.ecore#//Task/game"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference test.ecore#//Task/states"/>
+    </genClasses>
+    <genClasses ecoreClass="test.ecore#//TaskState">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//TaskState/entered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//TaskState/exited"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
