@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GraphQL EMF integration
+Bundle-Name: GraphQL support for EMF
 Bundle-SymbolicName: no.hal.graphql.emf
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.9.0.qualifier
 Export-Package: graphql,
  graphql.schema,
  no.hal.graphql.emf
@@ -12,5 +12,6 @@ Bundle-ClassPath: target/dependency/antlr4-runtime.jar,
  target/dependency/graphql-java.jar,
  target/dependency/slf4j-api.jar,
  .
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.slf4j;version="1.7.2"
+Bundle-ActivationPolicy: lazy
