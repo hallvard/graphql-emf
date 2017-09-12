@@ -5,7 +5,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:test="platform:/plugin/no.hal.graphql.emf.tests/src/no/hal/graphql/emf/test/test.ecore"
     xsi:schemaLocation="platform:/plugin/no.hal.graphql.emf.tests/src/no/hal/graphql/emf/test/test.ecore test.ecore">
-  <persons name="Hallvard">
+  <persons name="Hallvard"
+      birthday="1966-11-16T00:00:00.000+0100">
     <ids>hal@ntnu.no</ids>
     <ids>hallvard.traetteberg@gmail.com</ids>
   </persons>

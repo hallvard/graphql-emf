@@ -2,7 +2,9 @@ package no.hal.graphql.emf.test;
 
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +64,7 @@ public class GraphQLEmfTest extends TestCase {
 //    	for (GraphQLType type : schema.getAllTypesAsList()) {
 //    		System.out.println(type.getName());
 //    	}
-	    	checkInterfaceType("Person", "name", "ids");
+	    	checkInterfaceType("Person", "name", "ids", "birthday");
 	    	checkInterfaceType("Player", "getName", "getId", "person", "kind");
 	    	checkEnumType("PlayerKind", "NOVICE", "EXPERT");
 	    	checkInterfaceType("Game", "tasks", "players");
@@ -120,7 +122,7 @@ public class GraphQLEmfTest extends TestCase {
 					+ "players {"
 						+ "getName,"
 						+ "getId(num: 0),"
-						+ "person { name }"
+						+ "person { name, birthday }"
 					+ "}"
 				+ "}"
 				+ "players {"
@@ -137,22 +139,24 @@ public class GraphQLEmfTest extends TestCase {
 			throw afe;
 		}
 	    	Map<String, Object> data = result.getData();
+//	    	printData(data, System.out);
 	    	checkData(data, "tasks", 1);
 	    	checkData(data, "tasks", 0, "players", 1);
 	    	checkData(data, "tasks", 0, "players", 0, "getName", "Hallvard");
 	    	checkData(data, "tasks", 0, "players", 0, "getId", "hal@ntnu.no");
 	    	checkData(data, "tasks", 0, "players", 0, "person", "name", "Hallvard");
+	    	String birthday = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSSZ").format(new Date(66, 10, 16));
+	    	checkData(data, "tasks", 0, "players", 0, "person", "birthday", birthday);
 
 	    	checkData(data, "players", 2);
 	    	checkData(data, "players", 0, "kind", "NOVICE");
-	    	checkData(data, "players", 0, "person", "name", "Hallvard");
+		checkData(data, "players", 0, "person", "name", "Hallvard");
 	    	checkData(data, "players", 0, "person", "ids", 2);
 	    	checkData(data, "players", 0, "person", "ids", 0, "hal@ntnu.no");
 	    	checkData(data, "players", 0, "person", "ids", 1, "hallvard.traetteberg@gmail.com");
 	    	checkData(data, "players", 1, "person", "name", "Jon Espen");
 	    	checkData(data, "players", 1, "person", "ids", 0, "jonespi@idi.ntnu.no");
 	    	checkData(data, "players", 1, "person", "ids", 1, "jonespen.ingvaldsen@ntnu.no");
-//	    	printData(data, System.out);
     }
     
     public static void printData(Map<String, Object> data, OutputStream out) {

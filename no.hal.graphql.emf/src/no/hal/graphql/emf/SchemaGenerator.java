@@ -45,7 +45,7 @@ public class SchemaGenerator {
 	private final Collection<EPackage> packages;
 
 	public SchemaGenerator(Collection<EPackage> packages) {
-		this.packages = new ArrayList<EPackage>(packages);
+		this.packages = new ArrayList<>(packages);
 	}
 
 	public SchemaGenerator(EPackage... packages) {
@@ -69,10 +69,10 @@ public class SchemaGenerator {
 		return schemaBuilder.build();
 	}
 
-	private Map<EClass, String> references = new HashMap<EClass, String>();
+	private Map<EClass, String> references = new HashMap<>();
 
-	private Map<EClass, GraphQLObjectType> objectTypes = new HashMap<EClass, GraphQLObjectType>();
-	private Map<EClass, GraphQLInterfaceType> interfaceTypes = new HashMap<EClass, GraphQLInterfaceType>();
+	private Map<EClass, GraphQLObjectType> objectTypes = new HashMap<>();
+	private Map<EClass, GraphQLInterfaceType> interfaceTypes = new HashMap<>();
 	
 	private String objectTypeNameFormat = "%sObject";
 	private String interfaceTypeNameFormat = "%s";
@@ -96,7 +96,7 @@ public class SchemaGenerator {
 		}
 	};
 	
-	private Map<EClass, Collection<ETypedElement>> unresolvedElements = new HashMap<EClass, Collection<ETypedElement>>();
+	private Map<EClass, Collection<ETypedElement>> unresolvedElements = new HashMap<>();
 	
 	private GraphQLInterfaceType getInterfaceType(EClass eClass) {
 		GraphQLInterfaceType interfaceType = interfaceTypes.get(eClass);
@@ -104,7 +104,7 @@ public class SchemaGenerator {
 			String name = getInterfaceTypeName(eClass);
 			GraphQLInterfaceType.Builder typeBuilder = GraphQLInterfaceType.newInterface().name(name);
 			// add fields
-			Collection<GraphQLFieldDefinition> fields = new ArrayList<GraphQLFieldDefinition>();
+			Collection<GraphQLFieldDefinition> fields = new ArrayList<>();
 			addFields(eClass, fields);
 			addResolvedFields(eClass, fields);
 			for (GraphQLFieldDefinition field : fields) {
@@ -144,7 +144,7 @@ public class SchemaGenerator {
 			if (isUnresolved(typedElement, eClass)) {
 				Collection<ETypedElement> unresolved = unresolvedElements.get(eClass);
 				if (unresolved == null) {
-					unresolved = new ArrayList<ETypedElement>();
+					unresolved = new ArrayList<>();
 					unresolvedElements.put(eClass, unresolved);
 				}
 				unresolved.add(typedElement);
@@ -227,14 +227,14 @@ public class SchemaGenerator {
 			GraphQLInterfaceType interfaceType = getInterfaceType(eClass);
 			GraphQLObjectType.Builder typeBuilder = GraphQLObjectType.newObject().name(name);
 			// add fields
-			Collection<GraphQLFieldDefinition> fields = new ArrayList<GraphQLFieldDefinition>();
+			Collection<GraphQLFieldDefinition> fields = new ArrayList<>();
 			addFields(eClass, fields);
 			addResolvedFields(eClass, fields);
 			for (GraphQLFieldDefinition field : fields) {
 				typeBuilder.field(field);
 			}
 			// add interfaces
-			Collection<GraphQLInterfaceType> interfaceTypes = new ArrayList<GraphQLInterfaceType>();
+			Collection<GraphQLInterfaceType> interfaceTypes = new ArrayList<>();
 			interfaceTypes.add(interfaceType);
 			for (EClass superClass : eClass.getEAllSuperTypes()) {
 				interfaceTypes.add(getInterfaceType(superClass));
@@ -292,7 +292,7 @@ public class SchemaGenerator {
 		return type;
 	}
 	
-	private Map<EEnum, GraphQLEnumType> enumTypes = new HashMap<EEnum, GraphQLEnumType>();
+	private Map<EEnum, GraphQLEnumType> enumTypes = new HashMap<>();
 	
 	protected GraphQLEnumType getEnumType(EEnum eEnum) {
 		GraphQLEnumType enumType = enumTypes.get(eEnum);
@@ -311,16 +311,7 @@ public class SchemaGenerator {
 		if (eClassifier instanceof EEnum) {
 			return getEnumType((EEnum) eClassifier);
 		} else if (eClassifier instanceof EDataType) {
-			Class<?> instanceClass = ((EDataType) eClassifier).getInstanceClass();
-			if (instanceClass == String.class) {
-				return Scalars.GraphQLString;
-			} else if (instanceClass == Integer.TYPE || instanceClass == Integer.class || instanceClass == Long.TYPE || instanceClass == Long.class) {
-				return Scalars.GraphQLInt;
-			} else if (instanceClass == Float.TYPE || instanceClass == Float.class || instanceClass == Double.TYPE || instanceClass == Double.class) {
-				return Scalars.GraphQLFloat;
-			} else if (instanceClass == Boolean.TYPE || instanceClass == Boolean.class) {
-				return Scalars.GraphQLBoolean;
-			}
+			return getGraphQLScalarType((EDataType) eClassifier);
 		} else if (eClassifier instanceof EClass && typeClass.isAssignableFrom(GraphQLOutputType.class)) {
 			String referenceName = references.get(eClassifier);
 			if (referenceName != null) {
@@ -328,6 +319,20 @@ public class SchemaGenerator {
 			} else {
 				return getInterfaceType((EClass) eClassifier);
 			}
+		}
+		return null;
+	}
+
+	static GraphQLType getGraphQLScalarType(EDataType dateType) {
+		Class<?> instanceClass = dateType.getInstanceClass();
+		if (instanceClass == Integer.TYPE || instanceClass == Integer.class || instanceClass == Long.TYPE || instanceClass == Long.class) {
+			return Scalars.GraphQLInt;
+		} else if (instanceClass == Float.TYPE || instanceClass == Float.class || instanceClass == Double.TYPE || instanceClass == Double.class) {
+			return Scalars.GraphQLFloat;
+		} else if (instanceClass == Boolean.TYPE || instanceClass == Boolean.class) {
+			return Scalars.GraphQLBoolean;
+		} else if (dateType.isSerializable()) {
+			return Scalars.GraphQLString;
 		}
 		return null;
 	}

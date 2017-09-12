@@ -90,13 +90,22 @@ public class TestPackage extends EPackageImpl {
 	public static final int PERSON__NAME = 1;
 
 	/**
+	 * The feature id for the '<em><b>Birthday</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int PERSON__BIRTHDAY = 2;
+
+	/**
 	 * The number of structural features of the '<em>Person</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSON_FEATURE_COUNT = 2;
+	public static final int PERSON_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Person</em>' class.
@@ -550,6 +559,20 @@ public class TestPackage extends EPackageImpl {
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link no.hal.graphql.emf.test.Person#getBirthday <em>Birthday</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Birthday</em>'.
+	 * @see no.hal.graphql.emf.test.Person#getBirthday()
+	 * @see #getPerson()
+	 * @generated
+	 */
+	public EAttribute getPerson_Birthday() {
+		return (EAttribute)personEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link no.hal.graphql.emf.test.Game <em>Game</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -854,6 +877,7 @@ public class TestPackage extends EPackageImpl {
 		personEClass = createEClass(PERSON);
 		createEAttribute(personEClass, PERSON__IDS);
 		createEAttribute(personEClass, PERSON__NAME);
+		createEAttribute(personEClass, PERSON__BIRTHDAY);
 
 		gameEClass = createEClass(GAME);
 		createEReference(gameEClass, GAME__TASKS);
@@ -919,6 +943,7 @@ public class TestPackage extends EPackageImpl {
 		initEClass(personEClass, Person.class, "Person", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPerson_Ids(), ecorePackage.getEString(), "ids", null, 0, -1, Person.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPerson_Name(), ecorePackage.getEString(), "name", null, 0, 1, Person.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPerson_Birthday(), ecorePackage.getEDate(), "birthday", null, 0, 1, Person.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(gameEClass, Game.class, "Game", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGame_Tasks(), this.getTask(), this.getTask_Game(), "tasks", null, 0, -1, Game.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -998,6 +1023,14 @@ public class TestPackage extends EPackageImpl {
 		 * @generated
 		 */
 		public static final EAttribute PERSON__NAME = eINSTANCE.getPerson_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Birthday</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute PERSON__BIRTHDAY = eINSTANCE.getPerson_Birthday();
 
 		/**
 		 * The meta object literal for the '{@link no.hal.graphql.emf.test.Game <em>Game</em>}' class.

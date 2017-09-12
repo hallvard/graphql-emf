@@ -8,7 +8,7 @@
   <parent>
   	<groupId>no.hal.graphql.emf</groupId>
   	<artifactId>no.hal.graphql.emf.parent</artifactId>
-  	<version>0.1.0-SNAPSHOT</version>
+  	<version>0.9.0-SNAPSHOT</version>
   	<relativePath>../no.hal.graphql.emf.parent</relativePath>
   </parent>
 

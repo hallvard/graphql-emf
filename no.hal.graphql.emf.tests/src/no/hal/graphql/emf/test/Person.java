@@ -4,6 +4,7 @@ package no.hal.graphql.emf.test;
 
 import java.util.Collection;
 
+import java.util.Date;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
@@ -27,6 +28,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <ul>
  *   <li>{@link no.hal.graphql.emf.test.Person#getIds <em>Ids</em>}</li>
  *   <li>{@link no.hal.graphql.emf.test.Person#getName <em>Name</em>}</li>
+ *   <li>{@link no.hal.graphql.emf.test.Person#getBirthday <em>Birthday</em>}</li>
  * </ul>
  *
  * @see no.hal.graphql.emf.test.TestPackage#getPerson()
@@ -63,6 +65,26 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getBirthday() <em>Birthday</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBirthday()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Date BIRTHDAY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getBirthday() <em>Birthday</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBirthday()
+	 * @generated
+	 * @ordered
+	 */
+	protected Date birthday = BIRTHDAY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,6 +160,39 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Birthday</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Birthday</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Birthday</em>' attribute.
+	 * @see #setBirthday(Date)
+	 * @see no.hal.graphql.emf.test.TestPackage#getPerson_Birthday()
+	 * @model
+	 * @generated
+	 */
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	/**
+	 * Sets the value of the '{@link no.hal.graphql.emf.test.Person#getBirthday <em>Birthday</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Birthday</em>' attribute.
+	 * @see #getBirthday()
+	 * @generated
+	 */
+	public void setBirthday(Date newBirthday) {
+		Date oldBirthday = birthday;
+		birthday = newBirthday;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TestPackage.PERSON__BIRTHDAY, oldBirthday, birthday));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -149,6 +204,8 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 				return getIds();
 			case TestPackage.PERSON__NAME:
 				return getName();
+			case TestPackage.PERSON__BIRTHDAY:
+				return getBirthday();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -169,6 +226,9 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 			case TestPackage.PERSON__NAME:
 				setName((String)newValue);
 				return;
+			case TestPackage.PERSON__BIRTHDAY:
+				setBirthday((Date)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -187,6 +247,9 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 			case TestPackage.PERSON__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case TestPackage.PERSON__BIRTHDAY:
+				setBirthday(BIRTHDAY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -203,6 +266,8 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 				return ids != null && !ids.isEmpty();
 			case TestPackage.PERSON__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case TestPackage.PERSON__BIRTHDAY:
+				return BIRTHDAY_EDEFAULT == null ? birthday != null : !BIRTHDAY_EDEFAULT.equals(birthday);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -221,6 +286,8 @@ public class Person extends MinimalEObjectImpl.Container implements EObject {
 		result.append(ids);
 		result.append(", name: ");
 		result.append(name);
+		result.append(", birthday: ");
+		result.append(birthday);
 		result.append(')');
 		return result.toString();
 	}
