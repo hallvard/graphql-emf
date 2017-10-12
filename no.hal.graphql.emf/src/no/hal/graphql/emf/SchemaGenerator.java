@@ -111,7 +111,12 @@ public class SchemaGenerator {
 				typeBuilder.field(field);
 			}
 			typeBuilder.typeResolver(typeResolver);
-			interfaceType = typeBuilder.build();
+			try {
+				interfaceType = typeBuilder.build();
+			} catch (RuntimeException e) {
+				System.err.println(e + ": " + eClass);
+				throw e;
+			}
 			interfaceTypes.put(eClass, interfaceType);
 		}
 		return interfaceType;
@@ -147,7 +152,9 @@ public class SchemaGenerator {
 					unresolved = new ArrayList<>();
 					unresolvedElements.put(eClass, unresolved);
 				}
-				unresolved.add(typedElement);
+				if (! unresolved.contains(typedElement)) {
+					unresolved.add(typedElement);
+				}
 			} else {
 				addField(typedElement, eClass, fields);
 			}
@@ -160,10 +167,15 @@ public class SchemaGenerator {
 			Collection<ETypedElement> unresolved = unresolvedElements.get(superClass);
 			if (unresolved != null) {
 				Iterator<ETypedElement> it = unresolved.iterator();
-				while (it.hasNext()) {
+				next: while (it.hasNext()) {
 					ETypedElement typedElement = it.next();
 					if (! isUnresolved(typedElement, eClass)) {
 						it.remove();
+						for (GraphQLFieldDefinition field : fields) {
+							if (typedElement.getName().equals(field.getName())) {
+								continue next;
+							}
+						}
 						addField(typedElement, eClass, fields);
 					}
 				}
@@ -248,7 +260,8 @@ public class SchemaGenerator {
 	}
 
 	protected GraphQLFieldDefinition generate(ETypedElement element, EClass context, Collection<? extends ETypedElement> parameters) {
-		GraphQLFieldDefinition.Builder fieldBuilder = GraphQLFieldDefinition.newFieldDefinition().name(element.getName());
+		String name = element.getName();
+		GraphQLFieldDefinition.Builder fieldBuilder = GraphQLFieldDefinition.newFieldDefinition().name(name);
 		GraphQLType type = getGraphQLType(element, context, GraphQLOutputType.class);
 		if (type == null) {
 			return null;
