@@ -54,9 +54,9 @@ public class SchemaGenerator {
 
 	private Builder schemaBuilder; 
 
-	public GraphQLSchema generate(EClass queryClass) {
+	public GraphQLSchema generate(EClass eClass) {
 		schemaBuilder = GraphQLSchema.newSchema();
-		schemaBuilder.query(getObjectType(queryClass));
+		schemaBuilder.query(getObjectType(eClass));
 		for (EPackage ePackage : packages) {
 			for (EClassifier eClassifier : ePackage.getEClassifiers()) {
 				if (eClassifier instanceof EClass) {
@@ -66,6 +66,7 @@ public class SchemaGenerator {
 				}
 			}
 		}
+		schemaBuilder.mutation(getObjectType(eClass));
 		return schemaBuilder.build();
 	}
 
@@ -131,10 +132,10 @@ public class SchemaGenerator {
 			// stay within domain
 			if (includesPackage(eClass.getEPackage())) {
 				addFields(eClass.getEAllStructuralFeatures(), eClass, fields);
-				addFields(eClass.getEOperations(), eClass, fields);
-				for (EClass superClass : eClass.getEAllSuperTypes()) {
-					addFields(superClass.getEOperations(), eClass, fields);
-				}
+				addFields(eClass.getEAllOperations(), eClass, fields);
+//				for (EClass superClass : eClass.getEAllSuperTypes()) {
+//					addFields(superClass.getEOperations(), eClass, fields);
+//				}
 			}
 		} catch (StackOverflowError e) {
 			System.err.println(eClass.getName() + ": " + e);
@@ -207,6 +208,9 @@ public class SchemaGenerator {
 	}
 
 	private boolean isUnresolved(EGenericType type, EClass eClass) {
+		if (type == null) {
+			return false;
+		}
 		EGenericType reifiedType = EcoreUtil.getReifiedType(eClass, type);
 		if (reifiedType.getETypeParameter() != null) {
 			return true;
@@ -220,10 +224,6 @@ public class SchemaGenerator {
 	}
 
 	private boolean shouldExclude(EClass eClass, ETypedElement typedElement) {
-		// void operations are excluded
-		if (typedElement.getEGenericType() == null) {
-			return true;
-		}
 		// container references are excluded
 		if (typedElement instanceof EReference && ((EReference) typedElement).isContainer()) {
 			return true;
@@ -294,8 +294,9 @@ public class SchemaGenerator {
 	}
 	
 	private GraphQLType getGraphQLType(ETypedElement typedElement, EClass context, Class<? extends GraphQLType> typeClass) {
-		EClassifier eClassifier = EcoreUtil.getReifiedType(context, typedElement.getEGenericType()).getEClassifier();
-		GraphQLType type = getGraphQLType(eClassifier, typeClass);
+		EGenericType reifiedType = EcoreUtil.getReifiedType(context, typedElement.getEGenericType());
+		EClassifier eClassifier = (reifiedType != null ? reifiedType.getEClassifier() : (EClassifier) typedElement.eContainer());
+		GraphQLType type = (eClassifier == context ? new GraphQLTypeReference(getInterfaceTypeName(context)) : getGraphQLType(eClassifier, typeClass));
 		if (! typeClass.isInstance(type)) {
 			return null;
 		}

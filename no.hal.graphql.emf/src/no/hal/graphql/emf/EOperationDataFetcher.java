@@ -27,13 +27,13 @@ public class EOperationDataFetcher implements DataFetcher<Object> {
 		}
 		EObject context = (EObject) environment.getSource();
 		try {
-			EList<Object> arguments = new BasicEList<Object>();
+			EList<Object> arguments = new BasicEList<>();
 			for (EParameter parameter : operation.getEParameters()) {
 				Object arg = environment.getArgument(parameter.getName());
 				arguments.add(convertArgument(arg, parameter.getEType(), context));
 			}
 			Object value = context.eInvoke(operation, arguments);
-			return value;
+			return (value == null && operation.getEType() == null ? context : value);
 		} catch (Exception e) {
 			return null;
 		}
